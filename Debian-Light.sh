@@ -257,6 +257,7 @@ apt-get install --no-install-recommends -y \
     aria2 \
     axel \
     ncurses-term \
+    tightvncserver \
     
     # Display final message
     echo "AndroMa has been installed successfully. You can Use ./start-ubuntu22.sh!"
