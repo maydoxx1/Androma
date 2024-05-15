@@ -263,7 +263,7 @@ apt-get install --no-install-recommends -y \
     tightvncserver \
     
     # Display final message
-    echo "AndroMa has been installed successfully. You can Use ./start-ubuntu22.sh!"
+    echo "AndroMa has been installed successfully. You can Use ./start-debian.sh!"
 
     # Clear the terminal
     clear
