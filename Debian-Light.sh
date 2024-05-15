@@ -101,6 +101,9 @@ chmod +x "$bin"
 echo "Removing image for some space"
 rm "$tarball"
 
+# Enter the environment
+./start-debian.sh
+
 # Install lightweight packages
 apt-get update
 apt-get install --no-install-recommends -y \
