@@ -1,6 +1,6 @@
 #!/bin/bash
 clear
-echo "Installing AwesomeWM"
+echo "Installing Awesome"
 sleep 2
 sudo apt update -y
 apt install keyboard-configuration -y
@@ -9,13 +9,6 @@ apt install sudo wget dialog -y
 apt install libexo-2-0 -y
 sudo apt install awesome tigervnc-standalone-server wget nano dbus-x11 xorg xterm xfce4-terminal pcmanfm shotwell cairo-dock tigervnc-common --no-install-recommends -y
 clear
-
-read -p "Want to install default browser ? (y/n)" choice
-case "$choice" in 
-  y|Y ) sudo apt install epiphany-browser -y ;;
-  n|N ) echo "Ok... Not epiphany browser";;
-  * ) echo "invalid";;
-esac
 
 read -p "What to install chromium browser ? (y/n) [ Chromium might not work on arm/arm32/armhf devices ] " choice
 case "$choice" in 
