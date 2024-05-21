@@ -1,58 +1,45 @@
 #!/data/data/com.termux/files/usr/bin/bash
-
-# Install required packages
-pkg install wget proot tar -y 
-
-# Variables
+pkg install wget -y 
 folder=debian-fs
-cur=$(pwd)
-tarball="debian-rootfs.tar.xz"
-
-# Check device architecture
-arch=$(dpkg --print-architecture)
-case $arch in
-    aarch64)
-        archurl="arm64" ;;
-    *)
-        echo "Unsupported architecture: $arch"; exit 1 ;;
-esac
-
-# Setup storage
-termux-setup-storage
-
-# Download and extract Rootfs if not already downloaded
-if [ ! -d "$folder" ]; then
-    echo "Downloading Rootfs, this may take a while based on your internet speed."
-    wget "https://github.com/Techriz/AndronixOrigin/blob/master/Rootfs/Debian/${archurl}/debian-rootfs-${archurl}.tar.xz?raw=true" -O "$tarball"
-    
-    # Check download status
-    if [ $? -ne 0 ]; then
-        echo "Error: Failed to download Rootfs. Exiting."
-        exit 1
-    fi
-    
-    mkdir -p "$folder"
-    cd "$folder"
-    echo "Decompressing Rootfs, please be patient."
-    proot --link2symlink tar -xf "${cur}/${tarball}" ||:
-    cd "$cur"
+dlink="https://raw.githubusercontent.com/AndronixApp/AndronixOrigin/master/APT"
+dlink2="https://raw.githubusercontent.com/AndronixApp/AndronixOrigin/master/WM/APT"
+if [ -d "$folder" ]; then
+        first=1
+        echo "skipping downloading"
 fi
-
-# Create necessary directories
+tarball="debian-rootfs.tar.xz"
+if [ "$first" != 1 ];then
+        if [ ! -f $tarball ]; then
+                echo "Download Rootfs, this may take a while base on your internet speed."
+                case `dpkg --print-architecture` in
+                aarch64)
+                        archurl="arm64" ;;
+                arm)
+                        archurl="armhf" ;;
+                amd64)
+                        archurl="amd64" ;;
+                x86_64)
+                        archurl="amd64" ;;        
+                i*86)
+                        archurl="i386" ;;
+                x86)
+                        archurl="i386" ;;
+                *)
+                        echo "unknown architecture"; exit 1 ;;
+                esac
+                wget "https://github.com/Techriz/AndronixOrigin/blob/master/Rootfs/Debian/${archurl}/debian-rootfs-${archurl}.tar.xz?raw=true" -O $tarball
+        fi
+        cur=`pwd`
+        mkdir -p "$folder"
+        cd "$folder"
+        echo "Decompressing Rootfs, please be patient."
+        proot --link2symlink tar -xf ${cur}/${tarball}||:
+        cd "$cur"
+fi
 mkdir -p debian-binds
-mkdir -p "${folder}/proc/fakethings"
-
-# Create fake proc files if not exist
-for file in "${cur}/${folder}/proc/fakethings/stat" "${cur}/${folder}/proc/fakethings/version" "${cur}/${folder}/proc/fakethings/vmstat"; do
-    if [ ! -f "$file" ]; then
-        echo "# Contents of /proc/stat file" > "$file"
-    fi
-done
-
-# Create launch script
 bin=start-debian.sh
-echo "Writing launch script"
-cat > "$bin" <<- EOM
+echo "writing launch script"
+cat > $bin <<- EOM
 #!/bin/bash
 cd \$(dirname \$0)
 ## unset LD_PRELOAD in case termux-exec is installed
@@ -88,49 +75,60 @@ else
 fi
 EOM
 
-# Set permissions and configurations
-chmod +x debian-fs/root/.bash_profile
-touch "$folder"/root/.hushlogin
-echo "127.0.0.1 localhost localhost" > "$folder"/etc/hosts
-echo "nameserver 1.1.1.1" > "$folder"/etc/resolv.conf
-chmod +x "$folder"/etc/resolv.conf
-echo "Fixing shebang of $bin"
-termux-fix-shebang "$bin"
-echo "Making $bin executable"
-chmod +x "$bin"
-echo "Removing image for some space"
-rm "$tarball"
+echo "fixing shebang of $bin"
+termux-fix-shebang $bin
+echo "making $bin executable"
+chmod +x $bin
+echo "removing image for some space"
+rm $tarball
 
-# Enter the environment
-./start-debian.sh
+#DE installation addition
 
-# Install lightweight packages
-apt-get update
-apt-get install --no-install-recommends -y \
-    xterm \
-    nano \
+wget --tries=20 $dlink2/awesome.sh -O $folder/awesome.sh
+clear
+echo "Setting up the installation of Awesome VNC"
+
+echo "APT::Acquire::Retries \"3\";" > $folder/etc/apt/apt.conf.d/80-retries #Setting APT retry count
+echo "#!/bin/bash
+apt update -y && apt install wget sudo -y
+clear
+if [ ! -f /root/awesome.sh ]; then
+    wget --tries=20 $dlink2/awesome.sh -O /root/awesome.sh
+    bash ~/awesome.sh
+else
+    bash ~/awesome.sh
+fi
+clear
+
+if [ ! -f /usr/bin/vncserver ]; then
+    apt install tigervnc-standalone-server -y
+fi
+clear
+echo ' Welcome to AndroMa Debian! '
+rm -rf ~/.bash_profile" > $folder/root/.bash_profile 
+sudo apt install -y \
+    build-essential \
+    curl \
+    git \
     htop \
+    nano \
+    wget \
+    tmux \
+    zsh \
+    neofetch \
+    ranger \
+    mc \
+    vim \
+    lynx \
     feh \
     scrcpy \
     pcmanfm \
-    lxappearance \
     openbox \
     obconf \
     mpv \
     deadbeef \
     cmus \
     rxvt-unicode \
-    tmux \
-    git \
-    wget \
-    curl \
-    lynx \
-    vim \
-    zsh \
-    neofetch \
-    ranger \
-    mc \
-    mplayer \
     transmission-cli \
     netcat \
     nmap \
@@ -153,20 +151,15 @@ apt-get install --no-install-recommends -y \
     newsboat \
     mutt \
     neomutt \
-    lynx \
-    w3m \
-    w3m-img \
     cmatrix \
     toilet \
     figlet \
     dialog \
     rsync \
     xdg-utils \
-    xdg-utils-devel \
     xdg-user-dirs \
     scrot \
     imagemagick \
-    lynx \
     calcurse \
     lua5.3 \
     lua5.3-dev \
@@ -183,18 +176,14 @@ apt-get install --no-install-recommends -y \
     python-setuptools \
     python3-setuptools \
     golang \
-    build-essential \
-    gcc \
     clang \
     cmake \
     automake \
     autoconf \
     pkg-config \
     libtool \
-    fakeroot \
     busybox \
     busybox-static \
-    less \
     ncdu \
     bc \
     gnupg \
@@ -203,8 +192,6 @@ apt-get install --no-install-recommends -y \
     lsof \
     ssh \
     openssh \
-    ssh-client \
-    ssh-server \
     file \
     sudo \
     grep \
@@ -213,35 +200,9 @@ apt-get install --no-install-recommends -y \
     m4 \
     flex \
     bison \
-    nano \
-    vim \
     emacs \
-    sudo \
     inetutils \
     apt-utils \
-    zip \
-    unzip \
-    unrar \
-    rsync \
-    cron \
-    cronie \
-    cron-utils \
-    cronolog \
-    ssmtp \
-    bsd-mailx \
-    heirloom-mailx \
-    neomutt \
-    msmtp \
-    mutt \
-    postfix \
-    emacs-nox \
-    ed \
-    joe \
-    vim-nox \
-    nvi \
-    nano \
-    dnsutils \
-    dnsmasq \
     bind \
     bind9 \
     whois \
@@ -250,23 +211,10 @@ apt-get install --no-install-recommends -y \
     iputils \
     iproute2 \
     iptables \
-    netcat \
-    nmap \
     socat \
-    curl \
-    wget \
     axel \
-    transmission-cli \
     aria2 \
-    axel \
     ncurses-term \
-    tightvncserver \
-    
-    # Display final message
-    echo "AndroMa has been installed successfully. You can Use ./start-debian.sh!"
+    tightvncserver
 
-    # Clear the terminal
-    clear
-
-    # Clean up
-    rm -rf ~/.bash_profile
+bash $bin
