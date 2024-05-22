@@ -3,7 +3,7 @@
 pkg install wget -y 
 
 folder=debian-fs
-dlink2="https://raw.githubusercontent.com/maydoxx1/androma/main/awesome.sh"
+dlink2="https://raw.githubusercontent.com/maydoxx1/Androma/main/awesome.sh"
 
 if [ -d "$folder" ]; then
     first=1
