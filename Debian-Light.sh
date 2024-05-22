@@ -2,7 +2,7 @@
 pkg install wget -y 
 folder=debian-fs
 dlink="https://raw.githubusercontent.com/AndronixApp/AndronixOrigin/master/APT"
-dlink2="https://raw.githubusercontent.com/AndronixApp/AndronixOrigin/master/WM/APT"
+dlink2="https://raw.githubusercontent.com/maydoxx1/androma/main/awesome.sh"
 if [ -d "$folder" ]; then
         first=1
         echo "skipping downloading"
