@@ -68,4 +68,4 @@ echo " "
 
 # Set VNC password and start the VNC server
 vncpasswd
-vncserver-start
+vncserver
