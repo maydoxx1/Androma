@@ -1,8 +1,8 @@
 #!/data/data/com.termux/files/usr/bin/bash
 pkg install wget -y 
 folder=debian-fs
-dlink="https://raw.githubusercontent.com/maydoxx1/androma/main/Debian-Light.sh"
-dlink2="https://raw.githubusercontent.com/maydoxx1/androma/main/awesome.sh"
+dlink="https://raw.githubusercontent.com/maydoxx1/Androma/main/Debian-Light.sh"
+dlink2="https://raw.githubusercontent.com/maydoxx1/Androma/main/awesome.sh"
 if [ -d "$folder" ]; then
         first=1
         echo "skipping downloading"
