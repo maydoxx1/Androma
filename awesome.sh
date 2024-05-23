@@ -67,5 +67,4 @@ echo "To kill the VNC server, just run vncserver-stop."
 echo " "
 
 # Set VNC password and start the VNC server
-vncpasswd
 vncserver
