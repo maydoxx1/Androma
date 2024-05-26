@@ -6,7 +6,7 @@ sleep 2
 # Update and install required packages
 sudo apt update -y
 sudo apt install -y keyboard-configuration tzdata sudo wget dialog libexo-2-0
-sudo apt install -y awesome tigervnc-standalone-server nano dbus-x11 xorg xterm xfce4-terminal pcmanfm shotwell cairo-dock --no-install-recommends
+sudo apt install -y awesome tigervnc-standalone-server nano dbus-x11 xorg xterm xfce4-terminal pcmanfm shotwell cairo-dock apt-utils --no-install-recommends
 
 # Clear the screen
 clear
