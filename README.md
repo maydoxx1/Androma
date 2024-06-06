@@ -8,6 +8,7 @@ if you got apt-utils isn't installed you can run this command
 --------------------------
 sudo apt install apt-utils
 --------------------------
+
 # Warning!!
 If Awesome Doesn't starts then you must run
 chmod +x awesome.sh
