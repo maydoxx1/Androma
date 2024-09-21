@@ -27,7 +27,7 @@ if [ "$first" != 1 ];then
                 *)
                         echo "unknown architecture"; exit 1 ;;
                 esac
-                wget "https://github.com/Techriz/AndronixOrigin/blob/master/Rootfs/Debian/${archurl}/debian-rootfs-${archurl}.tar.xz?raw=true" -O $tarball
+                wget "https://github.com/termux/proot-distro/releases/download/v4.7.0/debian-rootfs-${archurl}.tar.xz" -O $tarball
         fi
         cur=`pwd`
         mkdir -p "$folder"
