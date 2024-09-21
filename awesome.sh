@@ -11,23 +11,6 @@ sudo apt install -y awesome tigervnc-standalone-server nano dbus-x11 xorg xterm 
 # Clear the screen
 clear
 
-# Prompt for Chromium installation
-read -p "Would you like to install Chromium browser? (y/n) [Chromium might not work on arm/arm32/armhf devices]: " choice
-case "$choice" in 
-  y|Y ) 
-    wget https://raw.githubusercontent.com/AndronixApp/AndronixOrigin/master/Uninstall/ubchromiumfix.sh 
-    chmod +x ubchromiumfix.sh 
-    ./ubchromiumfix.sh 
-    rm -rf ubchromiumfix.sh 
-    ;;
-  n|N ) 
-    echo "Ok... Not installing Chromium"
-    ;;
-  * ) 
-    echo "Invalid choice, not installing Chromium"
-    ;;
-esac
-
 # Create .vnc directory
 mkdir -p ~/.vnc
 
