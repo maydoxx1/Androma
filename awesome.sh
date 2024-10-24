@@ -15,7 +15,7 @@ clear
 mkdir -p ~/.vnc
 
 # Download wallpaper
-wget https://raw.githubusercontent.com/maydoxx1/Androma/refs/heads/main/wallpaper.jpeg -O /usr/share/wallpaper.jpg
+wget https://raw.githubusercontent.com/maydoxx1/Androma/refs/heads/main/wallpaper.tiff -O /usr/share/wallpaper.jpg
 
 # Create xstartup script for VNC
 cat <<EOM > ~/.vnc/xstartup
