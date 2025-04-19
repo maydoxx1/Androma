@@ -11,8 +11,10 @@ if you got apt-utils isn't installed you can run this command
 
 # Warning!!
 If Awesome Doesn't starts then you must run
-chmod +x awesome.sh
-./awesome.sh
+
+-------------------
+    chmod +x awesome.sh && sudo ./awesome.sh
+--------------------
 or you can modify it if the issue still.
 via nano or vim or vi etc....
 # Notice
